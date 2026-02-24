@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLI — Kommer snart</title>
+  <meta name="description"
+    content="MLI (Emelie Blomgren) — Svensk folkemusiker og visesangerinde. Noget nyt er på vej. Følg med på TikTok.">
+  <meta property="og:title" content="MLI — Kommer snart">
+  <meta property="og:description" content="Noget nyt er på vej fra MLI — svensk folkemusik & nordisk vise.">
+  <meta property="og:image" content="images/hero.jpg">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- Hero background -->
+  <div class="hero-bg">
+    <img src="images/hero.jpg" alt="" aria-hidden="true">
+    <div class="hero-overlay"></div>
+  </div>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- Logo / Title -->
+    <div class="logo-group fade-up">
+      <h1 class="logo">MLI</h1>
+      <div class="logo-line"></div>
+      <p class="logo-sub">Svensk folkemusik &bull; Nordisk vise</p>
+    </div>
+
+    <!-- Glass card -->
+    <div class="card fade-up delay-1">
+      <p class="card-tagline">Noget nyt er på vej&hellip;</p>
+      <p class="card-text">
+        Siden er under opbygning. Snart kan du opleve mere af MLIs nordiske univers her.
+        Indtil da — følg med på TikTok.
+      </p>
+
+      <!-- TikTok button -->
+      <a href="https://www.tiktok.com/@mli_ananas" target="_blank" rel="noopener" class="btn-tiktok" id="tiktok-link">
+        <svg class="tiktok-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.4a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.98a8.18 8.18 0 0 0 4.76 1.52V7.05a4.84 4.84 0 0 1-1-.36z"/>
+        </svg>
+        <span>Følg MLI på TikTok</span>
+      </a>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact fade-up delay-2">
+      <p>Kontakt: <a href="mailto:e.blomgren@outlook.dk" id="email-link">e.blomgren@outlook.dk</a></p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 MLI &mdash; Emelie Blomgren</p>
+  </footer>
+
+  <!-- Guitar accent image (decorative) -->
+  <div class="accent-img" aria-hidden="true">
+    <img src="images/guitar.jpg" alt="">
+  </div>
+
+  <script>
+    // === Particle system ===
+    (function () {
+      const container = document.getElementById('particles');
+      const count = window.innerWidth < 600 ? 20 : 45;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 12 + 's';
+        p.style.animationDuration = (8 + Math.random() * 14) + 's';
+        p.style.setProperty('--size', (2 + Math.random() * 3) + 'px');
+        p.style.setProperty('--drift', (Math.random() * 120 - 60) + 'px');
+        container.appendChild(p);
+      }
+    })();
+
+    // === Scroll-reveal fade-in ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+
+</html>
