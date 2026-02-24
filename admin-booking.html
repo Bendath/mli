@@ -916,16 +916,17 @@
                     const safeId = esc(b.id);
 
                     let actions = '';
-                    if (b.status === 'pending') {
-                        actions += '<button class="action-btn action-approve" onclick="window._admin.approve(\'' + safeId + '\')">✓ Godkend</button>';
-                        actions += '<button class="action-btn action-decline" onclick="window._admin.decline(\'' + safeId + '\')">✗ Afvis</button>';
-                    } else if (b.status === 'approved') {
-                        if (b.email) actions += '<a class="action-btn action-confirm" href="' + buildConfirmationMailto(b) + '">✉ Send bekræftelse</a>';
-                        actions += '<a class="action-btn action-calendar" href="' + buildGoogleCalUrl(b) + '" target="_blank" rel="noopener">📅 Kalender</a>';
-                        actions += '<button class="action-btn action-decline" onclick="window._admin.decline(\'' + safeId + '\')">✗ Afvis</button>';
-                    } else {
+                    if (b.status !== 'approved') {
                         actions += '<button class="action-btn action-approve" onclick="window._admin.approve(\'' + safeId + '\')">✓ Godkend</button>';
                     }
+                    if (b.status !== 'declined') {
+                        actions += '<button class="action-btn action-decline" onclick="window._admin.decline(\'' + safeId + '\')">✗ Afvis</button>';
+                    }
+                    if (b.status === 'approved') {
+                        if (b.email) actions += '<a class="action-btn action-confirm" href="' + buildConfirmationMailto(b) + '">✉ Send bekræftelse</a>';
+                        actions += '<a class="action-btn action-calendar" href="' + buildGoogleCalUrl(b) + '" target="_blank" rel="noopener">📅 Kalender</a>';
+                    }
+                    actions += '<button class="action-btn" style="background:#4a90d9;color:#fff" onclick="window._admin.edit(\'' + safeId + '\')">✏ Redigér</button>';
                     actions += '<button class="action-btn action-delete" onclick="window._admin.remove(\'' + safeId + '\')">🗑 Slet</button>';
 
                     return '<div class="booking-entry">' +
@@ -955,10 +956,50 @@
 
             async function render() { await fetchBookings(); renderStats(); renderCalendar(); renderList(); }
 
+            async function editBooking(id) {
+                const b = cachedBookings.find(x => x.id === id);
+                if (!b) return;
+
+                const newName = prompt('Navn:', b.name || '');
+                if (newName === null) return; // cancelled
+                const newDate = prompt('Dato (YYYY-MM-DD):', b.date || '');
+                if (newDate === null) return;
+                const newTimeStart = prompt('Start-tid (HH:MM):', b.timeStart || '');
+                if (newTimeStart === null) return;
+                const newTimeEnd = prompt('Slut-tid (HH:MM):', b.timeEnd || '');
+                if (newTimeEnd === null) return;
+                const newEventType = prompt('Event-type:', b.eventType || '');
+                if (newEventType === null) return;
+                const newLocation = prompt('Sted:', b.location || '');
+                if (newLocation === null) return;
+                const newMessage = prompt('Besked/noter:', b.message || '');
+                if (newMessage === null) return;
+
+                try {
+                    await fetch(API_BASE + '/' + id, {
+                        method: 'PUT',
+                        headers: apiHeaders(),
+                        body: JSON.stringify({
+                            name: newName,
+                            date: newDate,
+                            timeStart: newTimeStart,
+                            timeEnd: newTimeEnd,
+                            eventType: newEventType,
+                            location: newLocation,
+                            message: newMessage,
+                        }),
+                    });
+                } catch (err) {
+                    console.error('Redigering fejlede:', err);
+                }
+                await render();
+            }
+
             window._admin = {
                 approve: function (id) { updateStatus(id, 'approved'); },
                 decline: function (id) { updateStatus(id, 'declined'); },
-                remove: function (id) { if (confirm('Slet denne booking?')) deleteBooking(id); }
+                remove: function (id) { if (confirm('Slet denne booking?')) deleteBooking(id); },
+                edit: function (id) { editBooking(id); }
             };
 
             // Filter tabs

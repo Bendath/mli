@@ -38,31 +38,37 @@ export async function onRequestOptions() {
 export async function onRequestPost({ request, env }) {
     try {
         const body = await request.json();
+        const admin = isAdmin(request, env);
 
-        // Validate required fields
-        const required = ['name', 'email', 'date', 'timeStart', 'timeEnd', 'eventType', 'location'];
-        for (const field of required) {
-            if (!body[field] || !body[field].toString().trim()) {
-                return errorResponse(`Feltet '${field}' er påkrævet.`);
+        // Validate required fields — strict for public, relaxed for admin
+        if (!admin) {
+            const required = ['name', 'email', 'date', 'timeStart', 'timeEnd', 'eventType', 'location'];
+            for (const field of required) {
+                if (!body[field] || !body[field].toString().trim()) {
+                    return errorResponse(`Feltet '${field}' er påkrævet.`);
+                }
             }
+        } else {
+            // Admin only needs a date
+            if (!body.date) return errorResponse('Dato er påkrævet.');
         }
 
         // Build booking object
         const booking = {
             id: generateId(),
-            name: body.name.trim(),
-            email: body.email.trim(),
+            name: (body.name || 'Manuel').trim(),
+            email: (body.email || '').trim(),
             phone: (body.phone || '').trim(),
             wantsCallback: !!body.wantsCallback,
             date: body.date.trim(),
-            timeStart: body.timeStart.trim(),
-            timeEnd: body.timeEnd.trim(),
-            eventType: body.eventType.trim(),
-            location: body.location.trim(),
+            timeStart: (body.timeStart || '').trim(),
+            timeEnd: (body.timeEnd || '').trim(),
+            eventType: (body.eventType || 'Blokeret').trim(),
+            location: (body.location || '').trim(),
             guests: (body.guests || '').toString(),
             organization: (body.organization || '').trim(),
             message: (body.message || '').trim(),
-            status: 'pending',
+            status: (admin && body.status) ? body.status : 'pending',
             submittedAt: new Date().toISOString(),
         };
 
@@ -71,31 +77,32 @@ export async function onRequestPost({ request, env }) {
         existing.push(booking);
         await env.MLI_BOOKINGS.put('bookings', JSON.stringify(existing));
 
-        // Send ntfy push notification (server-side — topic name stays secret)
-        const ntfyTopic = env.NTFY_TOPIC || 'mli-booking-emelie';
-        const ntfyTitle = `Ny booking: ${booking.eventType}${booking.wantsCallback ? ' 📞 RING OP' : ''}`;
-        const ntfyBody =
-            `📅 ${booking.date} kl. ${booking.timeStart}–${booking.timeEnd}\n` +
-            `📍 ${booking.location}\n` +
-            `👤 ${booking.name}${booking.organization ? ` (${booking.organization})` : ''}\n` +
-            `✉️ ${booking.email}\n` +
-            (booking.phone ? `📞 ${booking.phone}${booking.wantsCallback ? ' — ØNSKER OPRINGNING' : ''}\n` : '') +
-            `🎵 ${booking.eventType}\n` +
-            (booking.guests ? `👥 Ca. ${booking.guests} gæster\n` : '') +
-            (booking.message ? `💬 ${booking.message}` : '');
+        // Send ntfy push notification only for public bookings (not admin manual ones)
+        if (!admin) {
+            const ntfyTopic = env.NTFY_TOPIC || 'mli-booking-emelie';
+            const ntfyTitle = `Ny booking: ${booking.eventType}${booking.wantsCallback ? ' 📞 RING OP' : ''}`;
+            const ntfyBody =
+                `📅 ${booking.date} kl. ${booking.timeStart}–${booking.timeEnd}\n` +
+                `📍 ${booking.location}\n` +
+                `👤 ${booking.name}${booking.organization ? ` (${booking.organization})` : ''}\n` +
+                `✉️ ${booking.email}\n` +
+                (booking.phone ? `📞 ${booking.phone}${booking.wantsCallback ? ' — ØNSKER OPRINGNING' : ''}\n` : '') +
+                `🎵 ${booking.eventType}\n` +
+                (booking.guests ? `👥 Ca. ${booking.guests} gæster\n` : '') +
+                (booking.message ? `💬 ${booking.message}` : '');
 
-        // Fire and forget — don't block the response
-        try {
-            await fetch(`https://ntfy.sh/${ntfyTopic}`, {
-                method: 'POST',
-                headers: {
-                    'Title': ntfyTitle,
-                    'Tags': booking.wantsCallback ? 'phone,musical_note' : 'musical_note,calendar',
-                    'Priority': booking.wantsCallback ? '5' : '4',
-                },
-                body: ntfyBody,
-            });
-        } catch (_) { /* ntfy failure should not block booking */ }
+            try {
+                await fetch(`https://ntfy.sh/${ntfyTopic}`, {
+                    method: 'POST',
+                    headers: {
+                        'Title': ntfyTitle,
+                        'Tags': booking.wantsCallback ? 'phone,musical_note' : 'musical_note,calendar',
+                        'Priority': booking.wantsCallback ? '5' : '4',
+                    },
+                    body: ntfyBody,
+                });
+            } catch (_) { /* ntfy failure should not block booking */ }
+        }
 
         return jsonResponse({ success: true, id: booking.id }, 201);
     } catch (err) {
