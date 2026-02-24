@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MLI — Lyt til Musikken</title>
+  <meta name="description"
+    content="Lyt til MLI (Emelie Blomgren) — Nordisk folkemusik, middelaldersballader og svensk visetradition. Stream 'Echoes of the Ancients' nu.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0A0C0B">
+
+  <!-- iOS PWA support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MLI Musik">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Background Particles -->
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="page">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-bg" style="background-image: url('assets/hero-bg.jpg');"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1>MLI</h1>
+        <p class="hero-tagline">Nordisk folkemusik &bull; Lyt til historiens klange</p>
+        <span class="hero-rune">&#5765; &bull; &#5768; &bull; &#5799;</span>
+      </div>
+    </section>
+
+    <!-- Now Playing -->
+    <section class="now-playing">
+      <div class="container">
+        <div class="nordic-divider fade-in"><span>Lyt Nu</span></div>
+
+        <div class="player-card fade-in" id="player-card">
+          <div class="player-layout">
+            <!-- Album Art -->
+            <div class="album-art-wrapper">
+              <div class="album-art-glow"></div>
+              <img src="assets/album-cover.webp" alt="Echoes of the Ancients — Album Cover" class="album-art"
+                id="album-art">
+            </div>
+
+            <!-- Track Info + Controls -->
+            <div class="track-info">
+              <div>
+                <h2 class="track-title">Echoes of the Ancients</h2>
+                <p class="track-artist">MLI &mdash; Emelie Blomgren</p>
+              </div>
+
+              <div class="track-meta">
+                <span class="track-tag">Nordisk Folk</span>
+                <span class="track-tag">Demo 2026</span>
+                <span class="track-tag">Historisk Musik</span>
+              </div>
+
+              <!-- Visualizer -->
+              <div class="visualizer-container">
+                <canvas id="visualizer-canvas"></canvas>
+              </div>
+
+              <!-- Progress -->
+              <div class="progress-wrapper">
+                <span class="progress-time" id="time-current">0:00</span>
+                <div class="progress-bar-container" id="progress-bar">
+                  <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <span class="progress-time end" id="time-total">0:00</span>
+              </div>
+
+              <!-- Controls -->
+              <div class="player-controls">
+                <!-- Rewind -->
+                <button class="control-btn" id="btn-rewind" title="Spol tilbage">
+                  <svg viewBox="0 0 24 24">
+                    <polygon points="11 19 2 12 11 5" fill="currentColor" stroke="none" />
+                    <polygon points="22 19 13 12 22 5" fill="currentColor" stroke="none" />
+                  </svg>
+                </button>
+
+                <!-- Play / Pause -->
+                <button class="play-btn" id="btn-play" title="Afspil">
+                  <svg viewBox="0 0 24 24" id="icon-play">
+                    <polygon points="6 3 20 12 6 21" />
+                  </svg>
+                  <svg viewBox="0 0 24 24" id="icon-pause" style="display:none;">
+                    <rect x="5" y="3" width="4" height="18" />
+                    <rect x="15" y="3" width="4" height="18" />
+                  </svg>
+                </button>
+
+                <!-- Forward -->
+                <button class="control-btn" id="btn-forward" title="Spol frem">
+                  <svg viewBox="0 0 24 24">
+                    <polygon points="13 19 22 12 13 5" fill="currentColor" stroke="none" />
+                    <polygon points="2 19 11 12 2 5" fill="currentColor" stroke="none" />
+                  </svg>
+                </button>
+
+                <!-- Volume -->
+                <div class="volume-wrapper">
+                  <button class="volume-btn" id="btn-volume" title="Lydstyrke">
+                    <svg viewBox="0 0 24 24" id="icon-vol-on">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19" fill="none" />
+                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" id="icon-vol-off" style="display:none;">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19" fill="none" />
+                      <line x1="23" y1="9" x2="17" y2="15" />
+                      <line x1="17" y1="9" x2="23" y2="15" />
+                    </svg>
+                  </button>
+                  <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.01" value="0.7">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Track List -->
+    <section class="tracklist-section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>Numre</h2>
+          <p>Demo-optagelser fra MLIs nordiske univers</p>
+        </div>
+
+        <ul class="track-list fade-in" id="track-list">
+          <li class="track-item active" data-src="assets/Echoes%20of%20the%20Ancients.mp3"
+            data-title="Echoes of the Ancients" data-artist="MLI">
+            <div class="track-number">
+              <span class="track-number-text">1</span>
+              <div class="playing-indicator">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="track-item-info">
+              <h4>Echoes of the Ancients</h4>
+              <span>MLI &mdash; Demo 2026</span>
+            </div>
+            <span class="track-duration" id="track-dur-1">--:--</span>
+          </li>
+          <li class="track-item" data-src="assets/Reaching.mp3" data-title="Reaching" data-artist="MLI">
+            <div class="track-number">
+              <span class="track-number-text">2</span>
+              <div class="playing-indicator">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="track-item-info">
+              <h4>Reaching</h4>
+              <span>MLI &mdash; Demo 2026</span>
+            </div>
+            <span class="track-duration" id="track-dur-2">--:--</span>
+          </li>
+          <li class="track-item" data-src="assets/Signalet%20i%20St%C3%B8jen.mp3" data-title="Signalet i Støjen"
+            data-artist="MLI">
+            <div class="track-number">
+              <span class="track-number-text">3</span>
+              <div class="playing-indicator">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="track-item-info">
+              <h4>Signalet i Støjen</h4>
+              <span>MLI &mdash; Demo 2026</span>
+            </div>
+            <span class="track-duration" id="track-dur-3">--:--</span>
+          </li>
+          <li class="track-item" data-src="assets/Signals%20in%20the%20dead%20zone.mp3"
+            data-title="Signals in the Dead Zone" data-artist="MLI">
+            <div class="track-number">
+              <span class="track-number-text">4</span>
+              <div class="playing-indicator">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="track-item-info">
+              <h4>Signals in the Dead Zone</h4>
+              <span>MLI &mdash; Demo 2026</span>
+            </div>
+            <span class="track-duration" id="track-dur-4">--:--</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TikTok Section -->
+    <section class="tiktok-section">
+      <div class="container">
+        <div class="nordic-divider fade-in"><span>TikTok</span></div>
+
+        <div class="section-header fade-in">
+          <h2>MLI på TikTok</h2>
+          <p>Følg med i MLIs nordiske univers på TikTok</p>
+        </div>
+
+        <div class="tiktok-grid fade-in">
+          <!-- TikTok Sound Card -->
+          <a href="https://www.tiktok.com/music/original-sound-7528366668529077014" target="_blank" rel="noopener"
+            class="tiktok-card tiktok-sound-card">
+            <div class="tiktok-card-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+              </svg>
+            </div>
+            <h3>♬ Original Sound</h3>
+            <p>Lyt til MLIs originale lyd på TikTok — bruges i hendes videoer og kan bruges som lyd af andre.</p>
+            <span class="tiktok-card-link">Åbn på TikTok &rarr;</span>
+          </a>
+
+          <!-- TikTok Profile Card -->
+          <a href="https://www.tiktok.com/@mli_ananas" target="_blank" rel="noopener"
+            class="tiktok-card tiktok-profile-card">
+            <div class="tiktok-card-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path
+                  d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.5 3h-3.3v11.4a2.592 2.592 0 0 1-2.598 2.6 2.592 2.592 0 0 1-2.6-2.6 2.592 2.592 0 0 1 2.6-2.6c.272 0 .534.044.78.116V8.57a6.048 6.048 0 0 0-.78-.07A5.97 5.97 0 0 0 3.6 14.4a5.97 5.97 0 0 0 6 5.98 5.97 5.97 0 0 0 6-5.98V8.86a7.94 7.94 0 0 0 4.6 1.46V7.04s-2.17.1-3.6-1.22z" />
+              </svg>
+            </div>
+            <h3>@mli_ananas</h3>
+            <p>Følg MLIs TikTok-profil for videoer med nordisk folkemusik, performances og bag-scenen-indhold.</p>
+            <span class="tiktok-card-link">Følg på TikTok &rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about-section">
+      <div class="container">
+        <div class="nordic-divider fade-in"><span>Om Kunstneren</span></div>
+
+        <div class="about-card fade-in">
+          <img src="assets/artist-portrait.jpg" alt="MLI — Emelie Blomgren" class="about-portrait">
+          <div class="about-text">
+            <h3>Emelie Blomgren</h3>
+            <p class="about-subtitle">Skjald &bull; Folkemusiker &bull; Visesangerinde</p>
+            <p>
+              MLI er kunstnernavnet for Emelie Blomgren — en svensk folkemusiker og visesangerinde bosat i Danmark.
+              Med rødder dybt plantet i den nordiske musiktradition bringer MLI historiens klange ind i nutiden
+              gennem kraftfuld sang, guitar og den gamle lyre.
+            </p>
+            <p>
+              I 2026 deltager MLI i X Factor Danmark i +23 kategorien under mentor Drew Sycamore,
+              hvor hun bringer folkeviser og nordisk sjæl til den store scene.
+            </p>
+            <div class="about-tags">
+              <span class="track-tag">Svensk Folkemusik</span>
+              <span class="track-tag">Middelaldersballader</span>
+              <span class="track-tag">Nordisk Vise</span>
+              <span class="track-tag">Skjald</span>
+              <span class="track-tag">X Factor 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-logo">MLI</div>
+        <div class="footer-divider"></div>
+        <p>Emelie Blomgren — Svensk folkemusik &amp; nordisk vise</p>
+        <p><a href="mailto:e.blomgren@outlook.dk">e.blomgren@outlook.dk</a></p>
+        <a href="../index.html" class="back-link">&#8592; Til MLI's hjemmeside</a>
+        <p style="margin-top: 1.5rem; font-size: 0.72rem; opacity: 0.4;">&copy; 2026 MLI. Alle rettigheder forbeholdes.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="audio" preload="metadata" src="assets/Echoes%20of%20the%20Ancients.mp3"></audio>
+
+  <script src="app.js"></script>
+  <script async src="https://www.tiktok.com/embed.js"></script>
+</body>
+
+</html>
