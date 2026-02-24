@@ -77,31 +77,34 @@ export async function onRequestPost({ request, env }) {
         existing.push(booking);
         await env.MLI_BOOKINGS.put('bookings', JSON.stringify(existing));
 
-        // Send ntfy push notification only for public bookings (not admin manual ones)
+        // Send Telegram notification only for public bookings (not admin manual ones)
         if (!admin) {
-            const ntfyTopic = env.NTFY_TOPIC || 'mli-booking-emelie';
-            const ntfyTitle = `Ny booking: ${booking.eventType}${booking.wantsCallback ? ' 📞 RING OP' : ''}`;
-            const ntfyBody =
-                `📅 ${booking.date} kl. ${booking.timeStart}–${booking.timeEnd}\n` +
-                `📍 ${booking.location}\n` +
-                `👤 ${booking.name}${booking.organization ? ` (${booking.organization})` : ''}\n` +
-                `✉️ ${booking.email}\n` +
-                (booking.phone ? `📞 ${booking.phone}${booking.wantsCallback ? ' — ØNSKER OPRINGNING' : ''}\n` : '') +
-                `🎵 ${booking.eventType}\n` +
-                (booking.guests ? `👥 Ca. ${booking.guests} gæster\n` : '') +
-                (booking.message ? `💬 ${booking.message}` : '');
+            const botToken = env.TELEGRAM_BOT_TOKEN;
+            const chatId = env.TELEGRAM_CHAT_ID;
 
-            try {
-                await fetch(`https://ntfy.sh/${ntfyTopic}`, {
-                    method: 'POST',
-                    headers: {
-                        'Title': ntfyTitle,
-                        'Tags': booking.wantsCallback ? 'phone,musical_note' : 'musical_note,calendar',
-                        'Priority': booking.wantsCallback ? '5' : '4',
-                    },
-                    body: ntfyBody,
-                });
-            } catch (_) { /* ntfy failure should not block booking */ }
+            if (botToken && chatId) {
+                const msg =
+                    `🎵 <b>Ny booking: ${booking.eventType}</b>${booking.wantsCallback ? ' 📞 <b>RING OP</b>' : ''}\n\n` +
+                    `📅 ${booking.date} kl. ${booking.timeStart}–${booking.timeEnd}\n` +
+                    `📍 ${booking.location}\n` +
+                    `👤 ${booking.name}${booking.organization ? ` (${booking.organization})` : ''}\n` +
+                    `✉️ ${booking.email}\n` +
+                    (booking.phone ? `📞 ${booking.phone}${booking.wantsCallback ? ' — ØNSKER OPRINGNING' : ''}\n` : '') +
+                    (booking.guests ? `👥 Ca. ${booking.guests} gæster\n` : '') +
+                    (booking.message ? `\n💬 "${booking.message}"` : '');
+
+                try {
+                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: msg,
+                            parse_mode: 'HTML',
+                        }),
+                    });
+                } catch (_) { /* Telegram failure should not block booking */ }
+            }
         }
 
         return jsonResponse({ success: true, id: booking.id }, 201);
