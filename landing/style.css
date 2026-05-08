@@ -92,19 +92,39 @@ a:hover { color: var(--gold-light); }
   100% { transform: translateY(-105vh) translateX(var(--drift, 30px)); opacity: 0; }
 }
 
-/* --- Main Content --- */
+/* --- Main Content Overlay --- */
 .main {
-  position: relative;
-  z-index: 2;
-  flex: 1;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 3rem 1.5rem;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  pointer-events: none;
   text-align: center;
-  gap: 2.5rem;
+}
+
+.main > * {
+  pointer-events: auto;
+}
+
+#canvas-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(circle at center, #1a1a20 0%, #0a0a0c 100%);
+}
+
+#canvas-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('images/hero_premium.png') center/cover no-repeat;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
 /* --- Logo / Title --- */
@@ -137,7 +157,8 @@ a:hover { color: var(--gold-light); }
   width: 80px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: .6;
+  opacity: .8;
+  box-shadow: 0 0 15px var(--gold-glow);
 }
 
 .logo-sub {
@@ -148,37 +169,54 @@ a:hover { color: var(--gold-light); }
   color: var(--text-muted);
 }
 
-/* --- Glass Card --- */
-.card {
-  background: var(--dark-card);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid rgba(201, 162, 77, .12);
-  border-radius: 20px;
-  padding: 2.8rem 2.4rem;
-  max-width: 520px;
+/* --- Glass Hero Card --- */
+.glass-hero {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 3rem;
+  max-width: 600px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.4rem;
-  box-shadow:
-    0 8px 32px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-.card-tagline {
+.glass-hero h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-size: 2.5rem;
   color: var(--gold-light);
-  letter-spacing: .06em;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px var(--gold-glow);
 }
 
-.card-text {
-  font-size: .95rem;
-  line-height: 1.7;
+.glass-hero p {
   color: var(--text-muted);
-  max-width: 400px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* --- Buttons & Glow --- */
+.btn-glow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #fe2c55 0%, #ff6b81 100%);
+  color: white;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 30px rgba(254, 44, 85, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-glow:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 0 50px rgba(254, 44, 85, 0.6);
+  color: white;
 }
 
 /* --- TikTok Button --- */
@@ -225,35 +263,55 @@ a:hover { color: var(--gold-light); }
   border-bottom-color: var(--gold);
 }
 
-/* --- Footer --- */
-.footer {
-  position: relative;
-  z-index: 2;
-  padding: 1.5rem;
-  text-align: center;
-  font-size: .72rem;
-  color: var(--text-muted);
-  opacity: .5;
+/* --- Loading Screen --- */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  transition: opacity 0.8s ease, visibility 0.8s;
 }
 
-/* --- Accent Image (decorative guitar) --- */
-.accent-img {
-  position: fixed;
-  bottom: -5%;
-  right: -4%;
-  width: 280px;
-  height: 380px;
-  z-index: 1;
-  pointer-events: none;
-  opacity: .08;
-  transform: rotate(-12deg);
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#loading-screen p {
+  font-family: var(--font-display);
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(201, 162, 77, 0.1);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .accent-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 16px;
+  object-fit: contain;
+}
+
+@keyframes floatLanding {
+  0%, 100% { transform: rotate(-15deg) translateY(0) translateX(0); }
+  50% { transform: rotate(-12deg) translateY(-20px) translateX(10px); }
 }
 
 /* --- Fade-up Animations --- */
@@ -284,11 +342,11 @@ a:hover { color: var(--gold-light); }
   }
 
   .accent-img {
-    width: 160px;
-    height: 220px;
-    right: -8%;
-    bottom: -3%;
-    opacity: .05;
+    width: 320px;
+    height: 400px;
+    right: -20px;
+    bottom: 0;
+    opacity: .6;
   }
 }
 
