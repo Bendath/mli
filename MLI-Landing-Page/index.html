@@ -49,38 +49,45 @@
     }
 
     .hero-content {
-      max-width: 700px;
-      margin-top: 5rem;
+      max-width: 90%;
+      margin-top: 2rem;
     }
 
     h2 {
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
-      letter-spacing: 0.4em;
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
       color: var(--gold-primary);
       text-transform: uppercase;
       margin-bottom: 0.5rem;
     }
 
     .tagline {
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       font-weight: 300;
       line-height: 1.2;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       font-family: 'Cinzel', serif;
     }
 
     .description {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       color: rgba(255,255,255,0.7);
-      margin-bottom: 3rem;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 100%;
+      line-height: 1.5;
+    }
+
+    @media (min-width: 768px) {
+      .hero-content { max-width: 700px; margin-top: 5rem; }
+      h2 { font-size: 1.2rem; letter-spacing: 0.4em; }
+      .tagline { font-size: 2.5rem; }
+      .description { font-size: 1.1rem; max-width: 500px; }
     }
 
     .btn-tiktok {
+      position: relative;
+      overflow: hidden;
       display: inline-flex;
       align-items: center;
       gap: 1rem;
@@ -97,6 +104,28 @@
       font-size: 0.85rem;
       transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
       box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.05);
+    }
+
+    /* Swipe / Shimmer Effect */
+    .btn-tiktok::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+      );
+      transform: skewX(-20deg);
+      transition: 0.8s;
+    }
+
+    .btn-tiktok:hover::after {
+      left: 150%;
     }
 
     .btn-tiktok:hover {
@@ -232,8 +261,12 @@
       fragmentShader
     });
 
-    const bgPlane = new THREE.Mesh(new THREE.PlaneGeometry(35, 20), shaderMat);
-    bgPlane.position.z = -10;
+    const isMobile = window.innerWidth < 768;
+    const bgPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(isMobile ? 22 : 45, isMobile ? 25 : 25), 
+      shaderMat
+    );
+    bgPlane.position.set(0, 0, -10);
     scene.add(bgPlane);
 
     // --- BONFIRE GLOW ---
@@ -355,13 +388,18 @@
     camera.position.z = 12;
 
     let mouseX = 0, mouseY = 0;
-    window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-      mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-      
-      // Update shader uniforms
+    const handleMove = (x, y) => {
+      mouseX = (x - window.innerWidth / 2) / (window.innerWidth / 2);
+      mouseY = (y - window.innerHeight / 2) / (window.innerHeight / 2);
       shaderMat.uniforms.uMouse.value.set(mouseX, -mouseY);
-    });
+    };
+
+    window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
 
     function animate() {
       requestAnimationFrame(animate);
