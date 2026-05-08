@@ -401,6 +401,39 @@
       }
     }, { passive: true });
 
+    // --- GYROSCOPE / DEVICE ORIENTATION ---
+    function initGyro() {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ requires permission
+        DeviceOrientationEvent.requestPermission()
+          .then(response => {
+            if (response === 'granted') {
+              window.addEventListener('deviceorientation', handleGyro);
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Android or older iOS
+        window.addEventListener('deviceorientation', handleGyro);
+      }
+    }
+
+    function handleGyro(e) {
+      // Gamma is left-to-right tilt (-90 to 90)
+      // Beta is front-to-back tilt (-180 to 180)
+      const x = e.gamma / 30; // Normalize to roughly -1 to 1
+      const y = (e.beta - 45) / 30; // 45 degrees is a natural holding angle
+      
+      // Smoothly update mouseX and mouseY
+      mouseX += (x - mouseX) * 0.1;
+      mouseY += (y - mouseY) * 0.1;
+      shaderMat.uniforms.uMouse.value.set(mouseX, -mouseY);
+    }
+
+    // Request gyro on first touch/click
+    window.addEventListener('click', initGyro, { once: true });
+    window.addEventListener('touchstart', initGyro, { once: true });
+
     function animate() {
       requestAnimationFrame(animate);
       if (logo) {
