@@ -1,0 +1,17 @@
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temp / generated
+*.jpeg
+24c94fbf-*
+imgto3d.json
+isolated_guitar.png
+Echoes of the Ancients.mp3
+
+# Folders
+6CC/
+BC/
+functions/
+landing/
+musik/
