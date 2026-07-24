@@ -369,6 +369,43 @@
       50% { opacity: 1; }
     }
 
+    /* Skip intro button — rubber keyframe */
+    .skip-intro {
+      position: fixed;
+      bottom: 5rem;
+      right: 1.5rem;
+      z-index: 60;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 230, 0.4);
+      background: rgba(10, 10, 12, 0.3);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      border-radius: 100px;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      animation: rubberKey 4s ease-in-out infinite;
+    }
+    .skip-intro:hover {
+      color: var(--gold-light);
+      background: rgba(10, 10, 12, 0.5);
+      border-color: rgba(212, 175, 55, 0.3);
+      animation: none;
+      transform: scale(1.05);
+    }
+    @keyframes rubberKey {
+      0%   { transform: scaleX(1) scaleY(1); }
+      2%   { transform: scaleX(1.15) scaleY(0.85); }
+      4%   { transform: scaleX(0.9) scaleY(1.1); }
+      6%   { transform: scaleX(1.05) scaleY(0.95); }
+      8%   { transform: scaleX(1) scaleY(1); }
+      100% { transform: scaleX(1) scaleY(1); }
+    }
+
     /* Loading screen */
     #loading-screen {
       position: fixed;
@@ -965,6 +1002,7 @@
       .intro-bar-track { width: 20px; }
       .intro-bar:hover .intro-bar-track { width: 100px; }
       .text-bg { padding: 1.2rem 1.5rem; }
+      .skip-intro { bottom: 4.5rem; right: 1rem; font-size: 0.6rem; padding: 0.4rem 1rem; }
     }
   </style>
 </head>
@@ -1110,6 +1148,9 @@
         <span class="intro-bar-icon youtube-icon">▶</span>
       </a>
     </div>
+
+    <!-- Skip intro button -->
+    <button class="skip-intro" id="skipIntro">Mød MLI</button>
   </div>
 
   <!-- ===== MAIN PAGE — Pastel Spring ===== -->
@@ -1418,6 +1459,11 @@
 
     showScene(0);
     startPlayback();
+
+    // ========== SKIP INTRO ==========
+    document.getElementById('skipIntro').addEventListener('click', () => {
+      transitionToMain();
+    });
   </script>
 </body>
 </html>
