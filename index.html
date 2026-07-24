@@ -28,23 +28,23 @@
       --font-display: 'Cinzel', serif;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
 
-      /* Pastel main page */
-      --sky: #d4eaf7;
-      --sky-deep: #b8dce8;
-      --rose: #f0d4d4;
-      --rose-soft: #f5e0e0;
-      --sage: #c5d9c0;
-      --sage-light: #dce8d8;
-      --lavender: #d8d0e0;
-      --cream: #f5f0e8;
-      --cream-warm: #faf5ed;
-      --honey: #e8c87a;
-      --honey-light: #f0dca0;
-      --honey-glow: rgba(232, 200, 122, 0.2);
-      --text-primary: #2c2a28;
-      --text-secondary: #5a5650;
-      --text-muted-main: #8a8680;
-      --bg-body: #faf7f2;
+      /* Pastel main page — muted, rolige farver */
+      --sky: #c8dce8;
+      --sky-deep: #b0d0e0;
+      --rose: #e4cccc;
+      --rose-soft: #e8d4d4;
+      --sage: #b8ccb3;
+      --sage-light: #ccdcc8;
+      --lavender: #c8c0d4;
+      --cream: #ede8e0;
+      --cream-warm: #f0ece4;
+      --honey: #d0b870;
+      --honey-light: #dcc888;
+      --honey-glow: rgba(208, 184, 112, 0.2);
+      --text-primary: #2a2825;
+      --text-secondary: #55504a;
+      --text-muted-main: #807a72;
+      --bg-body: #ede8e2;
       --bg-card: rgba(255, 255, 255, 0.6);
       --bg-card-hover: rgba(255, 255, 255, 0.8);
       --border-subtle: rgba(44, 42, 40, 0.08);
@@ -427,7 +427,7 @@
       overflow-x: hidden;
     }
 
-    /* Soft gradient background */
+    /* Soft gradient background — floating like a still puddle */
     #main::before {
       content: '';
       position: fixed;
@@ -440,6 +440,67 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0.6;
+      animation: floatGradient 20s ease-in-out infinite alternate;
+    }
+
+    /* Floating gradient animation — like a breeze over still water */
+    @keyframes floatGradient {
+      0% {
+        background:
+          radial-gradient(ellipse at 15% 20%, var(--sky) 0%, transparent 50%),
+          radial-gradient(ellipse at 85% 30%, var(--rose-soft) 0%, transparent 45%),
+          radial-gradient(ellipse at 50% 80%, var(--sage-light) 0%, transparent 50%),
+          radial-gradient(ellipse at 20% 70%, var(--lavender) 0%, transparent 40%);
+      }
+      25% {
+        background:
+          radial-gradient(ellipse at 18% 22%, var(--sky) 0%, transparent 50%),
+          radial-gradient(ellipse at 82% 28%, var(--rose-soft) 0%, transparent 45%),
+          radial-gradient(ellipse at 48% 78%, var(--sage-light) 0%, transparent 50%),
+          radial-gradient(ellipse at 23% 68%, var(--lavender) 0%, transparent 40%);
+      }
+      50% {
+        background:
+          radial-gradient(ellipse at 20% 18%, var(--sky) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 32%, var(--rose-soft) 0%, transparent 45%),
+          radial-gradient(ellipse at 52% 76%, var(--sage-light) 0%, transparent 50%),
+          radial-gradient(ellipse at 18% 72%, var(--lavender) 0%, transparent 40%);
+      }
+      75% {
+        background:
+          radial-gradient(ellipse at 12% 24%, var(--sky) 0%, transparent 50%),
+          radial-gradient(ellipse at 88% 26%, var(--rose-soft) 0%, transparent 45%),
+          radial-gradient(ellipse at 46% 82%, var(--sage-light) 0%, transparent 50%),
+          radial-gradient(ellipse at 25% 66%, var(--lavender) 0%, transparent 40%);
+      }
+      100% {
+        background:
+          radial-gradient(ellipse at 15% 20%, var(--sky) 0%, transparent 50%),
+          radial-gradient(ellipse at 85% 30%, var(--rose-soft) 0%, transparent 45%),
+          radial-gradient(ellipse at 50% 80%, var(--sage-light) 0%, transparent 50%),
+          radial-gradient(ellipse at 20% 70%, var(--lavender) 0%, transparent 40%);
+      }
+    }
+
+    /* Subtle ripple overlay — like a breeze touching water */
+    #main .bg-ripple {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(200, 220, 232, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(232, 200, 200, 0.06) 0%, transparent 40%);
+      animation: ripplePass 12s ease-in-out infinite;
+    }
+    @keyframes ripplePass {
+      0%   { opacity: 0; transform: scale(1); }
+      20%  { opacity: 0.4; transform: scale(1.02); }
+      40%  { opacity: 0.1; transform: scale(0.98); }
+      60%  { opacity: 0.3; transform: scale(1.01); }
+      80%  { opacity: 0.05; transform: scale(0.99); }
+      100% { opacity: 0; transform: scale(1); }
     }
 
     /* Subtle particles */
@@ -1053,6 +1114,7 @@
 
   <!-- ===== MAIN PAGE — Pastel Spring ===== -->
   <div id="main">
+    <div class="bg-ripple"></div>
 
     <!-- Hero -->
     <section class="hero">
@@ -1210,13 +1272,6 @@
             <div class="social-info">
               <h4>Facebook</h4>
               <span>MLI musiker</span>
-            </div>
-          </a>
-          <a href="https://www.mliblomgren.dk" target="_blank" rel="noopener" class="social-card reveal">
-            <div class="social-icon web">✦</div>
-            <div class="social-info">
-              <h4>Hjemmeside</h4>
-              <span>mliblomgren.dk</span>
             </div>
           </a>
         </div>
