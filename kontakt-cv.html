@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt &amp; CV — MLI</title>
+    <meta name="description"
+        content="Kontakt MLI (Emelie Blomgren) for booking og samarbejde. Musikalsk CV og presseomtale.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">MLI</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="historisk-musik.html">Historisk Musik</a></li>
+                <li><a href="svensk-folkemusik.html">Svensk Folkemusik</a></li>
+                <li><a href="viser.html">Viser</a></li>
+                <li><a href="kontakt-cv.html">Kontakt &amp; CV</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-bg" style="background-image: url('IMG_20260212_230742.jpg');"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Kontakt &amp; CV</h1>
+            <p class="hero-tagline">Booking, samarbejde og pressehenvendelser</p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="page-content">
+        <div class="container">
+
+            <!-- Contact Card -->
+            <div class="contact-card fade-in">
+                <div class="contact-icon">✉️</div>
+                <h3>Kontakt MLI</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 1rem;">
+                    For booking, samarbejde og pressehenvendelser — skriv til:
+                </p>
+                <a href="mailto:e.blomgren@outlook.dk">e.blomgren@outlook.dk</a>
+                <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 1rem;">
+                    Jeg bestræber mig på at svare inden for 48 timer.
+                </p>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="content-block fade-in">
+                <h2>Book MLI</h2>
+                <p class="section-subtitle">Vil du booke MLI til din begivenhed? Udfyld formularen herunder.</p>
+
+                <div class="booking-card">
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label for="booking-name">Navn *</label>
+                            <input type="text" id="booking-name" placeholder="Dit fulde navn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-email">Email *</label>
+                            <input type="email" id="booking-email" placeholder="din@email.dk" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-phone">Telefonnummer</label>
+                            <input type="tel" id="booking-phone" placeholder="+45 12 34 56 78">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="booking-callback">
+                            <label for="booking-callback">Jeg vil gerne ringes op</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-date">Ønsket dato *</label>
+                            <input type="date" id="booking-date" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-time-start">Fra kl. *</label>
+                                <input type="time" id="booking-time-start" value="18:00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-time-end">Til kl. *</label>
+                                <input type="time" id="booking-time-end" value="21:00" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-event">Type begivenhed *</label>
+                            <select id="booking-event" required>
+                                <option value="">Vælg type...</option>
+                                <option value="Koncert">Koncert</option>
+                                <option value="Festival">Festival</option>
+                                <option value="Privat arrangement">Privat arrangement</option>
+                                <option value="Bryllup">Bryllup / Reception</option>
+                                <option value="Firmaevent">Firmaevent</option>
+                                <option value="Vikingemarkked">Vikingemarkked / Historisk marked</option>
+                                <option value="Undervisning / Workshop">Undervisning / Workshop</option>
+                                <option value="Visestue">Visestue</option>
+                                <option value="Kirkekoncert">Kirkekoncert</option>
+                                <option value="Andet">Andet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-location">Sted / Adresse *</label>
+                            <input type="text" id="booking-location" placeholder="Adresse eller stedets navn" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-guests">Forventet antal gæster</label>
+                                <input type="number" id="booking-guests" placeholder="Ca. antal" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-org">Organisation / Firma</label>
+                                <input type="text" id="booking-org" placeholder="Valgfrit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-message">Besked</label>
+                            <textarea id="booking-message"
+                                placeholder="Fortæl mere om arrangementet, ønsker til repertoire, tekniske behov m.m."></textarea>
+                        </div>
+                        <!-- Honeypot anti-bot field (hidden from humans) -->
+                        <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden;"
+                            aria-hidden="true">
+                            <label for="booking-website">Website</label>
+                            <input type="text" id="booking-website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Send forespørgsel</button>
+                    </form>
+                    <p
+                        style="margin-top: 1rem; font-size: 0.82rem; color: var(--color-text-muted); text-align: center;">
+                        Eller kontakt direkte: <a href="mailto:e.blomgren@outlook.dk">e.blomgren@outlook.dk</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-ornament">
+                <span class="ornament-symbol">✦</span>
+            </div>
+
+            <!-- Musical CV -->
+            <div class="content-block fade-in">
+                <h2>Musikalsk CV</h2>
+                <p class="section-subtitle">Emelie Blomgren — MLI</p>
+
+                <div class="cv-timeline">
+                    <div class="cv-item">
+                        <span class="cv-year">2022 —</span>
+                        <div class="cv-title">GINNUNGAGAP — Historisk musikensemble</div>
+                        <div class="cv-desc">Medstifter af trioen GINNUNGAGAP med Kai Stensgaard og Tine K. Skau.
+                            Vikingemusik og norrøn klang. Optræder på vikingemarkeder, museer og festivaler.</div>
+                    </div>
+                    <div class="cv-item">
+                        <span class="cv-year">Løbende</span>
+                        <div class="cv-title">VISEKÆLLINGEN — Solo vise-projekt</div>
+                        <div class="cv-desc">Solo-optræden med nordiske viser, folkesange og middelaldersballader.
+                            Guitar og sang.</div>
+                    </div>
+                    <div class="cv-item">
+                        <span class="cv-year">Løbende</span>
+                        <div class="cv-title">Den Danske Bellmanskvartetten</div>
+                        <div class="cv-desc">Ensemble der hylder Carl Michael Bellmans arv. Samarbejde med Tine Skau og
+                            Kai Stensgaard.</div>
+                    </div>
+                    <div class="cv-item">
+                        <span class="cv-year">Løbende</span>
+                        <div class="cv-title">Visestuer &amp; Workshops</div>
+                        <div class="cv-desc">Leder Visestuer på festivaler som Skjaldefestivalen. Undervisning i
+                            folkemusik og fællessang. Skjaldeskole for børn.</div>
+                    </div>
+                    <div class="cv-item">
+                        <span class="cv-year">Kompetencer</span>
+                        <div class="cv-title">Instrumenter &amp; Færdigheder</div>
+                        <div class="cv-desc">Sang (hovedinstrument), guitar, lyre, trommer. Skaldisk tradition,
+                            historisk formidling, workshopleder. Synger på dansk, svensk, gammelsvensk og oldnordisk.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Articles Section -->
+            <div class="content-block fade-in">
+                <h2>I Pressen</h2>
+                <p class="section-subtitle">Udvalgte artikler og omtale af MLI / Emelie Blomgren</p>
+
+                <div class="articles-grid">
+                    <a href="#" target="_blank" rel="noopener" class="article-thumb">
+                        <img src="IMG_20260212_230746.jpg" alt="Avisartikel">
+                        <div class="article-info">
+                            <div class="article-source">Presse</div>
+                            <div class="article-title">Svensk folkemusiker bringer vikingemusik til Danmark</div>
+                        </div>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="article-thumb">
+                        <img src="IMG_20260212_230753.jpg" alt="Avisartikel">
+                        <div class="article-info">
+                            <div class="article-source">Presse</div>
+                            <div class="article-title">Svensk folkemusiker bringer vikingemusik til Danmark</div>
+                        </div>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="article-thumb">
+                        <img src="Resized_20260209_122823.jpg" alt="Omtale">
+                        <div class="article-info">
+                            <div class="article-source">Presse</div>
+                            <div class="article-title">GINNUNGAGAP — Historisk musik med sjæl og energi</div>
+                        </div>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="article-thumb">
+                        <img src="FB_IMG_1769685678842.jpg" alt="Omtale">
+                        <div class="article-info">
+                            <div class="article-source">Presse</div>
+                            <div class="article-title">Skjaldefestivalen — Visestue med MLI</div>
+                        </div>
+                    </a>
+                </div>
+
+                <p
+                    style="text-align: center; color: var(--color-text-muted); font-size: 0.85rem; font-style: italic; margin-top: 1.5rem;">
+                    Har du skrevet om MLI? Send gerne et link til <a
+                        href="mailto:e.blomgren@outlook.dk">e.blomgren@outlook.dk</a>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">MLI</div>
+            <div class="footer-divider"></div>
+            <p>Emelie Blomgren — Svensk folkemusik &amp; nordisk vise</p>
+            <p><a href="mailto:e.blomgren@outlook.dk">e.blomgren@outlook.dk</a></p>
+            <div class="footer-social">
+                <a href="https://www.tiktok.com/@mliblomgren" target="_blank" rel="noopener">♪ TikTok</a>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.75rem; opacity: 0.4;">&copy; 2026 MLI. Alle rettigheder
+                forbeholdes.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
