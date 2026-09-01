@@ -773,7 +773,10 @@
       -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 2rem;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       transition: all var(--transition);
     }
     .project-card:hover {
@@ -782,11 +785,31 @@
       box-shadow: var(--shadow-card-hover);
       transform: translateY(-3px);
     }
+    .project-thumb-wrapper {
+      width: 100%;
+      height: 160px;
+      overflow: hidden;
+      position: relative;
+      background: #dfd8d0;
+    }
+    .project-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .project-card:hover .project-thumb {
+      transform: scale(1.06);
+    }
+    .project-content {
+      padding: 1.5rem;
+      flex: 1;
+    }
     .project-icon {
-      font-size: 1.6rem;
-      margin-bottom: 0.8rem;
-      display: block;
-      opacity: 0.7;
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+      opacity: 0.8;
     }
     .project-card h3 {
       font-family: var(--font-serif);
@@ -798,6 +821,24 @@
       font-size: 0.9rem;
       color: var(--text-secondary);
       line-height: 1.6;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem auto;
+      width: 100%;
+      max-width: 360px;
+    }
+    .dahlia-stem-divider {
+      width: 100%;
+      height: 48px;
+      overflow: visible;
+    }
+    .dahlia-stem-divider path,
+    .dahlia-stem-divider circle {
+      stroke: var(--honey);
     }
 
     /* Social */
@@ -853,41 +894,74 @@
 
     /* Contact */
     .contact-card {
-      text-align: center;
-      padding: 3rem;
       background: var(--bg-card);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      max-width: 500px;
+      max-width: 650px;
       margin: 0 auto;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(44, 42, 40, 0.05);
+    }
+    @media (max-width: 640px) {
+      .contact-card {
+        grid-template-columns: 1fr;
+      }
+      .contact-image-wrapper {
+        height: 200px;
+      }
+    }
+    .contact-image-wrapper {
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      overflow: hidden;
+    }
+    .contact-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .contact-card:hover .contact-image {
+      transform: scale(1.05);
+    }
+    .contact-content {
+      padding: 2.5rem 2rem;
+      text-align: center;
     }
     .contact-card h3 {
       font-family: var(--font-serif);
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 400;
       margin-bottom: 0.5rem;
+      color: var(--text-primary);
     }
     .contact-card p {
       color: var(--text-secondary);
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
+      line-height: 1.6;
     }
     .contact-email {
       display: inline-block;
       font-family: var(--font-serif);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-style: italic;
       color: var(--text-primary);
-      padding: 0.6rem 1.5rem;
+      padding: 0.6rem 1.4rem;
       border: 1px solid var(--border-subtle);
       border-radius: 100px;
       transition: all var(--transition);
     }
     .contact-email:hover {
       border-color: var(--honey);
-      background: rgba(232, 200, 122, 0.08);
+      background: rgba(232, 200, 122, 0.12);
     }
 
     /* Footer */
@@ -969,9 +1043,9 @@
   <div id="intro">
     <div class="scene-container" id="sceneContainer">
 
-      <!-- Scene 1: Stage Portrait -->
+      <!-- Scene 1: Botanical Atmosphere -->
       <div class="scene" data-index="0">
-        <div class="scene-bg" style="background-image: url('IMG20260819105351.jpg'); background-position: 50% 30%;"></div>
+        <div class="scene-bg" style="background-image: url('georginer_banner.webp'); background-position: 50% 50%;"></div>
         <div class="scene-vignette"></div>
         <div class="scene-gradient"></div>
         <div class="scene-reveal">
@@ -993,9 +1067,9 @@
         </div>
       </div>
 
-      <!-- Scene 2: Nature with Guitar -->
+      <!-- Scene 2: Guitar & Room -->
       <div class="scene" data-index="1">
-        <div class="scene-bg" style="background-image: url('mli-nature-guitar.jpg'); background-position: 50% 40%;"></div>
+        <div class="scene-bg" style="background-image: url('georginer_album.webp'); background-position: 50% 50%;"></div>
         <div class="scene-vignette"></div>
         <div class="scene-gradient"></div>
         <div class="scene-reveal">
@@ -1019,9 +1093,9 @@
         </div>
       </div>
 
-      <!-- Scene 3: Thoughtful Portrait -->
+      <!-- Scene 3: Nature Landscape -->
       <div class="scene" data-index="2">
-        <div class="scene-bg" style="background-image: url('IMG20260819105412.jpg'); background-position: 50% 30%;"></div>
+        <div class="scene-bg" style="background-image: url('mli_stone_wall.webp'); background-position: 50% 40%;"></div>
         <div class="scene-vignette"></div>
         <div class="scene-gradient"></div>
         <div class="scene-reveal">
@@ -1048,7 +1122,7 @@
         </div>
       </div>
 
-      <!-- Scene 4: Lute -->
+      <!-- Scene 4: Lyre outdoors -->
       <div class="scene" data-index="3">
         <div class="scene-bg" style="background-image: url('mli-lute.jpg'); background-position: 50% 40%;"></div>
         <div class="scene-vignette"></div>
@@ -1111,7 +1185,7 @@
     <!-- Hero -->
     <section class="hero">
       <div class="hero-content">
-        <img src="IMG20260819105412.jpg" alt="MLI — Emelie Blomgren" class="hero-portrait reveal visible">
+        <img src="mli_glasses_portrait.webp" alt="MLI — Emelie Blomgren" class="hero-portrait reveal visible">
         <p class="hero-label reveal visible" style="transition-delay: 0.2s">✦ Svensk Folkemusiker & Skjald ✦</p>
         <h1 class="hero-title reveal visible" style="transition-delay: 0.3s">MLI</h1>
         <p class="hero-subtitle reveal visible" style="transition-delay: 0.4s">Emelie Blomgren</p>
@@ -1130,11 +1204,49 @@
         <div class="section-header reveal">
           <p class="section-label">Om MLI</p>
           <h2 class="section-title">En Nordisk Sjæl</h2>
-          <div class="section-divider"></div>
+          <div class="section-divider" aria-hidden="true">
+            <svg class="dahlia-stem-divider" viewBox="0 0 400 48" fill="none">
+              <path d="M 0 24 L 172 24 C 182 24 188 22 192 18" stroke="url(#honey-fade-left)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M 208 18 C 212 22 218 24 228 24 L 400 24" stroke="url(#honey-fade-right)" stroke-width="1.3" stroke-linecap="round"/>
+              <g class="dahlia-flower-head" transform="translate(200, 24)" stroke="var(--honey)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="0" cy="0" r="1.8" fill="var(--honey)"/>
+                <path d="M 0 -3 C -1 -5 0 -7.5 0 -9.5 C 0 -7.5 1 -5 0 -3"/>
+                <path d="M 0 3 C -1 5 0 7.5 0 9.5 C 0 7.5 1 5 0 3"/>
+                <path d="M -3 0 C -5 -1 -7.5 0 -9.5 0 C -7.5 0 -5 1 -3 0"/>
+                <path d="M 3 0 C 5 -1 7.5 0 9.5 0 C 7.5 0 5 1 3 0"/>
+                <path d="M -2.2 -2.2 C -4.5 -4.5 -6 -6.5 -7 -7 C -6.5 -6 -4.5 -4.5 -2.2 -2.2"/>
+                <path d="M 2.2 2.2 C 4.5 4.5 6 6.5 7 7 C 6.5 6 4.5 4.5 2.2 2.2"/>
+                <path d="M 2.2 -2.2 C 4.5 -4.5 6.5 -6 7 -7 C 6 -6.5 4.5 -4.5 2.2 -2.2"/>
+                <path d="M -2.2 2.2 C -4.5 4.5 -6.5 6 -7 7 C -6 6.5 -4.5 4.5 -2.2 2.2"/>
+                <path d="M 0 -9.5 C -1.8 -13 -1 -15.5 0 -18 C 1 -15.5 1.8 -13 0 -9.5"/>
+                <path d="M 0 9.5 C -1.8 13 -1 15.5 0 18 C 1 15.5 1.8 13 0 9.5"/>
+                <path d="M -9.5 0 C -13 -1.8 -15.5 -1 -18 0 C -15.5 1 -13 1.8 -9.5 0"/>
+                <path d="M 9.5 0 C 13 -1.8 15.5 -1 18 0 C 15.5 1 13 1.8 9.5 0"/>
+                <path d="M -7 -7 C -10 -10 -12 -12.5 -13.5 -13.5 C -12.5 -12 -10 -10 -7 -7"/>
+                <path d="M 7 7 C 10 10 12 12.5 13.5 13.5 C 12.5 12 10 10 7 7"/>
+                <path d="M 7 -7 C 10 -10 12.5 -12 13.5 -13.5 C 12 -12.5 10 -10 7 -7"/>
+                <path d="M -7 7 C -10 10 -12.5 12 -13.5 13.5 C -12 12.5 -10 10 -7 7"/>
+                <path d="M -3.5 -8 C -6 -12 -6.5 -15 -5.5 -17.5 C -4 -16 -3 -12 -3.5 -8"/>
+                <path d="M 3.5 -8 C 6 -12 6.5 -15 5.5 -17.5 C 4 -16 3 -12 3.5 -8"/>
+                <path d="M -3.5 8 C -6 12 -6.5 15 -5.5 17.5 C -4 16 -3 12 -3.5 8"/>
+                <path d="M 3.5 8 C 6 12 6.5 15 5.5 17.5 C 4 16 3 12 3.5 8"/>
+              </g>
+              <defs>
+                <linearGradient id="honey-fade-left" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="var(--honey)" stop-opacity="0"/>
+                  <stop offset="100%" stop-color="var(--honey)" stop-opacity="0.9"/>
+                </linearGradient>
+                <linearGradient id="honey-fade-right" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="var(--honey)" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="var(--honey)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
         </div>
         <div class="bio-grid">
           <div class="bio-image reveal">
-            <img src="IMG20260816115014.jpg" alt="MLI på scenen">
+            <img src="mli_stone_wall.webp" alt="MLI på stensætning i natur">
           </div>
           <div class="bio-content reveal">
             <h2>Emelie Blomgren</h2>
@@ -1161,34 +1273,85 @@
         <div class="section-header reveal">
           <p class="section-label">Musikalske Projekter</p>
           <h2 class="section-title">Historiske Toner</h2>
-          <div class="section-divider"></div>
+          <div class="section-divider" aria-hidden="true">
+            <svg class="dahlia-stem-divider" viewBox="0 0 400 48" fill="none">
+              <path d="M 0 24 L 176 24 C 184 24 189 22 192 18" stroke="url(#honey-fade-left)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M 208 18 C 211 22 216 24 224 24 L 400 24" stroke="url(#honey-fade-right)" stroke-width="1.3" stroke-linecap="round"/>
+              <g class="dahlia-flower-head" transform="translate(200, 20)" stroke="var(--honey)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="0" cy="0" r="2" fill="var(--honey)"/>
+                <path d="M 0 -2 C -1.2 -5 0 -8 0 -10 C 0 -8 1.2 -5 0 -2"/>
+                <path d="M 0 2 C -1.2 5 0 8 0 10 C 0 8 1.2 5 0 2"/>
+                <path d="M -2 0 C -5 -1.2 -8 0 -10 0 C -8 0 -5 1.2 -2 0"/>
+                <path d="M 2 0 C 5 -1.2 8 0 10 0 C 8 0 5 1.2 2 0"/>
+                <path d="M -1.4 -1.4 C -4 -4 -6 -6 -8 -8 C -6 -6 -4 -4 -1.4 -1.4"/>
+                <path d="M 1.4 1.4 C 4 4 6 6 8 8 C 6 6 4 4 1.4 1.4"/>
+                <path d="M 1.4 -1.4 C 4 -4 6 -6 8 -8 C 6 -6 4 -4 1.4 -1.4"/>
+                <path d="M -1.4 1.4 C -4 4 -6 6 -8 8 C -6 6 -4 4 -1.4 1.4"/>
+                <path d="M 0 -10 C -2.5 -13 -1.5 -16 0 -18 C 1.5 -16 2.5 -13 0 -10"/>
+                <path d="M 0 10 C -2.5 13 -1.5 16 0 18 C 1.5 16 2.5 13 0 10"/>
+                <path d="M -10 0 C -13 -2.5 -16 -1.5 -18 0 C -16 1.5 -13 2.5 -10 0"/>
+                <path d="M 10 0 C 13 -2.5 16 -1.5 18 0 C 16 1.5 13 2.5 10 0"/>
+                <path d="M -5.5 -5.5 C -10 -10 -12 -13 -14 -14 C -13 -12 -10 -10 -5.5 -5.5"/>
+                <path d="M 5.5 5.5 C 10 10 12 13 14 14 C 13 12 10 10 5.5 5.5"/>
+                <path d="M 5.5 -5.5 C 10 -10 13 -12 14 -14 C 12 -13 10 -10 5.5 -5.5"/>
+                <path d="M -5.5 5.5 C -10 10 -13 12 -14 14 C -12 13 -10 10 -5.5 5.5"/>
+                <path d="M -12 4 C -16 8 -20 6 -24 4"/>
+                <path d="M 12 4 C 16 8 20 6 24 4"/>
+              </g>
+            </svg>
+          </div>
           <p class="section-desc">Fra vikingetidens rå kraft til Bellmans viser — MLI's musikalske univers</p>
         </div>
         <div class="projects-grid">
           <div class="project-card reveal">
-            <span class="project-icon">⚔</span>
-            <h3>GINNUNGAGAP</h3>
-            <p>Vikingeband med historiske instrumenter og nordisk mytologi. Rå, episk lyd med lyre, krigstragt og stemmer fra fortiden.</p>
+            <div class="project-thumb-wrapper">
+              <img src="mli-lute.jpg" alt="GINNUNGAGAP" class="project-thumb">
+            </div>
+            <div class="project-content">
+              <span class="project-icon">⚔</span>
+              <h3>GINNUNGAGAP</h3>
+              <p>Vikingeband med historiske instrumenter og nordisk mytologi. Rå, episk lyd med lyre, krigstragt og stemmer fra fortiden.</p>
+            </div>
           </div>
           <div class="project-card reveal">
-            <span class="project-icon">🎵</span>
-            <h3>VISEKÆLLINGEN</h3>
-            <p>Traditionelle danske og svenske viser — fra middelalderballader til Bellman. Folkemusik i sin reneste form.</p>
+            <div class="project-thumb-wrapper">
+              <img src="mli_chair_guitar.webp" alt="VISEKÆLLINGEN" class="project-thumb">
+            </div>
+            <div class="project-content">
+              <span class="project-icon">🎵</span>
+              <h3>VISEKÆLLINGEN</h3>
+              <p>Traditionelle danske og svenske viser — fra middelalderballader til Bellman. Folkemusik i sin reneste form.</p>
+            </div>
           </div>
           <div class="project-card reveal">
-            <span class="project-icon">🎻</span>
-            <h3>Den Danske Bellmankvartetten</h3>
-            <p>Carl Michael Bellmans viser fortolket af en dansk kvartet. Humor, vemod og 1700-tallets stemning.</p>
+            <div class="project-thumb-wrapper">
+              <img src="mli_stage_mic.webp" alt="Den Danske Bellmankvartetten" class="project-thumb">
+            </div>
+            <div class="project-content">
+              <span class="project-icon">🎻</span>
+              <h3>Den Danske Bellmankvartetten</h3>
+              <p>Carl Michael Bellmans viser fortolket af en dansk kvartet. Humor, vemod og 1700-tallets stemning.</p>
+            </div>
           </div>
           <div class="project-card reveal">
-            <span class="project-icon">🌿</span>
-            <h3>Solo — Nordisk Klang</h3>
-            <p>Personlige fortolkninger af nordiske folkeviser. En rejse gennem den nordiske folkesjæl med sang og strenge.</p>
+            <div class="project-thumb-wrapper">
+              <img src="mli_glasses_portrait.webp" alt="Solo — Nordisk Klang" class="project-thumb">
+            </div>
+            <div class="project-content">
+              <span class="project-icon">🌿</span>
+              <h3>Solo — Nordisk Klang</h3>
+              <p>Personlige fortolkninger af nordiske folkeviser. En rejse gennem den nordiske folkesjæl med sang og strenge.</p>
+            </div>
           </div>
           <div class="project-card reveal">
-            <span class="project-icon">🏕</span>
-            <h3>Skjaldefestivalens Visestue</h3>
-            <p>MLI står for Visestuen på Skjaldefestival — en intim scene hvor historiske viser og fortællinger møder nutiden.</p>
+            <div class="project-thumb-wrapper">
+              <img src="mli_visestue_fb.webp" alt="Skjaldefestivalens Visestue" class="project-thumb">
+            </div>
+            <div class="project-content">
+              <span class="project-icon">🏕</span>
+              <h3>Skjaldefestivalens Visestue</h3>
+              <p>MLI står for Visestuen på Skjaldefestival — en intim scene hvor historiske viser og fortællinger møder nutiden.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1200,7 +1363,33 @@
         <div class="section-header reveal">
           <p class="section-label">Følg MLI</p>
           <h2 class="section-title">Mød hende Online</h2>
-          <div class="section-divider"></div>
+          <div class="section-divider" aria-hidden="true">
+            <svg class="dahlia-stem-divider" viewBox="0 0 400 48" fill="none">
+              <path d="M 0 24 L 176 24 C 184 24 189 22 192 18" stroke="url(#honey-fade-left)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M 208 18 C 211 22 216 24 224 24 L 400 24" stroke="url(#honey-fade-right)" stroke-width="1.3" stroke-linecap="round"/>
+              <g class="dahlia-flower-head" transform="translate(200, 20)" stroke="var(--honey)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="0" cy="0" r="2" fill="var(--honey)"/>
+                <path d="M 0 -2 C -1.2 -5 0 -8 0 -10 C 0 -8 1.2 -5 0 -2"/>
+                <path d="M 0 2 C -1.2 5 0 8 0 10 C 0 8 1.2 5 0 2"/>
+                <path d="M -2 0 C -5 -1.2 -8 0 -10 0 C -8 0 -5 1.2 -2 0"/>
+                <path d="M 2 0 C 5 -1.2 8 0 10 0 C 8 0 5 1.2 2 0"/>
+                <path d="M -1.4 -1.4 C -4 -4 -6 -6 -8 -8 C -6 -6 -4 -4 -1.4 -1.4"/>
+                <path d="M 1.4 1.4 C 4 4 6 6 8 8 C 6 6 4 4 1.4 1.4"/>
+                <path d="M 1.4 -1.4 C 4 -4 6 -6 8 -8 C 6 -6 4 -4 1.4 -1.4"/>
+                <path d="M -1.4 1.4 C -4 4 -6 6 -8 8 C -6 6 -4 4 -1.4 1.4"/>
+                <path d="M 0 -10 C -2.5 -13 -1.5 -16 0 -18 C 1.5 -16 2.5 -13 0 -10"/>
+                <path d="M 0 10 C -2.5 13 -1.5 16 0 18 C 1.5 16 2.5 13 0 10"/>
+                <path d="M -10 0 C -13 -2.5 -16 -1.5 -18 0 C -16 1.5 -13 2.5 -10 0"/>
+                <path d="M 10 0 C 13 -2.5 16 -1.5 18 0 C 16 1.5 13 2.5 10 0"/>
+                <path d="M -5.5 -5.5 C -10 -10 -12 -13 -14 -14 C -13 -12 -10 -10 -5.5 -5.5"/>
+                <path d="M 5.5 5.5 C 10 10 12 13 14 14 C 13 12 10 10 5.5 5.5"/>
+                <path d="M 5.5 -5.5 C 10 -10 13 -12 14 -14 C 12 -13 10 -10 5.5 -5.5"/>
+                <path d="M -5.5 5.5 C -10 10 -13 12 -14 14 C -12 13 -10 10 -5.5 5.5"/>
+                <path d="M -12 4 C -16 8 -20 6 -24 4"/>
+                <path d="M 12 4 C 16 8 20 6 24 4"/>
+              </g>
+            </svg>
+          </div>
         </div>
         <div class="social-grid">
           <a href="https://www.tiktok.com/@mli_ananas" target="_blank" rel="noopener" class="social-card reveal">
@@ -1239,9 +1428,14 @@
     <section class="section" id="contact">
       <div class="section-inner">
         <div class="contact-card reveal">
-          <h3>Kontakt</h3>
-          <p>Booking, samarbejde eller bare en hilsen — skriv til MLI</p>
-          <a href="mailto:e.blomgren@outlook.dk" class="contact-email">e.blomgren@outlook.dk</a>
+          <div class="contact-image-wrapper">
+            <img src="georginer_album.webp" alt="MLI — Akustisk Guitar & Hvid Georgine" class="contact-image">
+          </div>
+          <div class="contact-content">
+            <h3>Kontakt</h3>
+            <p>Booking, samarbejde eller bare en hilsen — skriv til MLI</p>
+            <a href="mailto:e.blomgren@outlook.dk" class="contact-email">e.blomgren@outlook.dk</a>
+          </div>
         </div>
       </div>
     </section>
