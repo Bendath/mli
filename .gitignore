@@ -15,3 +15,7 @@ BC/
 functions/
 landing/
 musik/
+
+# Side project local tools (not for production website)
+gallery.html
+optimize_and_relight.py
