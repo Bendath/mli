@@ -4,7 +4,7 @@ name = "mliblomgren"
 compatibility_date = "2024-01-01"
 
 [assets]
-directory = "."
+directory = "./"
 
 # KV namespace binding — replace the 'id' after creating the namespace
 # in Cloudflare Dashboard > Workers & Pages > KV
